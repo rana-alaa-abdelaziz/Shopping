@@ -1,0 +1,142 @@
+﻿
+@model IEnumerable<ITIEntities.Category>
+@{
+    ViewData["Title"] = "Admin - Categories";
+    Layout = "AdminSide";
+}
+
+<style>
+    .table thead th {
+        background-color: #1A4270 !important;
+        color: #ffffff !important;
+        border: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+        padding: 15px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        overflow: hidden;
+    }
+
+    .btn-brand {
+        background-color: #1A4270;
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-brand:hover {
+            background-color: #5cc8f7;
+            color: #1A4270;
+        }
+
+    .btn-outline-edit {
+        color: #1A4270;
+        border: 1px solid #1A4270;
+    }
+
+        .btn-outline-edit:hover {
+            background-color: #1A4270;
+            color: white;
+        }
+
+    .btn-outline-details {
+        color: #5cc8f7;
+        border: 1px solid #5cc8f7;
+    }
+
+        .btn-outline-details:hover {
+            background-color: #5cc8f7;
+            color: white;
+        }
+
+    .btn-outline-delete {
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+        .btn-outline-delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    h2 {
+        color: #1A4270;
+    }
+
+    .table thead {
+        background-color: #1A4270;
+    }
+
+        .table thead th {
+            color: white;
+            border: none;
+        }
+
+            .table thead th:first-child {
+                border-top-left-radius: 10px;
+            }
+
+            .table thead th:last-child {
+                border-top-right-radius: 10px;
+            }
+
+    .table tbody td {
+        color: #1A4270;
+    }
+</style>
+
+        <div class="main-content">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>Category Management</h2>
+                <a asp-action="Create" class="btn btn-primary" style="background-color: #1A4270;">
+                    <i class="fa-solid fa-plus me-1"></i> Add Category
+                </a>
+            </div>
+
+            <div class="card shadow-sm">
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                                <th>ID</th>
+                                <th>Parent ID</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td class="fw-bold">@Html.DisplayFor(modelItem => item.Name)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.CategoryId)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.ParentCategoryId)</td>
+                                    <td>
+                                        <div class="d-flex justify-content-center gap-2">
+                                    <a asp-action="Edit" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-edit">Edit</a>
+                                            <a asp-action="Details" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-info">Details</a>
+                                            <a asp-action="Delete" asp-route-id="@item.CategoryId" class="btn btn-sm btn-outline-danger">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+

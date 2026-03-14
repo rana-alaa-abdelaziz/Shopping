@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="ITIEntities/ITIEntities.csproj" />
+  <Project Path="Shopping/Shopping.csproj" />
+</Solution>

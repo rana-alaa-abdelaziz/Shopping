@@ -1,0 +1,167 @@
+﻿@model Shopping.ViewModels.CheckoutVM
+@{
+    ViewData["Title"] = "Checkout";
+    var cartItems = ViewBag.CartItems as List<Shopping.ViewModels.Order_ItemsVM>;
+}
+<style>
+    :root {
+        --brand-dark: #1A4270;
+        --brand-light: #5cc8f7;
+    }
+
+    .text-brand-dark {
+        color: var(--brand-dark) !important;
+    }
+
+    .checkout-card {
+        border-radius: 15px;
+        background-color: white;
+        border: 1px solid #f0f0f0;
+    }
+
+    .summary-card {
+        border-radius: 15px;
+        background-color: #f8fbff; /* Very light blue tint */
+        border: 1px solid rgba(26, 66, 112, 0.1);
+    }
+
+    .form-control:focus {
+        border-color: var(--brand-light);
+        box-shadow: 0 0 0 0.25rem rgba(92, 200, 247, 0.25);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: var(--brand-dark);
+        font-size: 0.9rem;
+    }
+
+    .btn-place-order {
+        background-color: var(--brand-dark);
+        color: white;
+        border: none;
+        padding: 15px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+
+        .btn-place-order:hover {
+            background-color: var(--brand-light);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .order-item-list {
+        max-height: 400px;
+        overflow-y: auto;
+    }
+</style>
+<div class="container mt-5 mb-5">
+    <div class="d-flex align-items-center mb-4">
+        <i class="fa-solid fa-shield-check fs-2 text-brand-light me-3"></i>
+        <h2 class="mb-0 text-brand-dark fw-bold">Checkout</h2>
+    </div>
+    <a asp-controller="Cart" asp-action="Index" class="text-decoration-none text-muted mb-3 d-inline-block">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to Cart
+    </a>
+    <div class="row g-4">
+        <div class="col-md-7">
+            <div class="card checkout-card shadow-sm">
+                <div class="card-body p-4">
+                    <h5 class="mb-4 d-flex align-items-center">
+                        <i class="fa-solid fa-truck text-brand-light me-2"></i> Shipping Address
+                    </h5>
+
+                    <form asp-action="Checkout" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label class="form-label">Country</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-globe text-muted"></i></span>
+                                    <input asp-for="Address.Country" class="form-control border-start-0" placeholder="e.g. Egypt" />
+                                </div>
+                                <span asp-validation-for="Address.Country" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">City</label>
+                                <input asp-for="Address.City" class="form-control" placeholder="Alexandria" />
+                                <span asp-validation-for="Address.City" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label">Zip Code</label>
+                                <input asp-for="Address.Zip" class="form-control" />
+                                <span asp-validation-for="Address.Zip" class="text-danger small"></span>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label">Street Address</label>
+                                <textarea asp-for="Address.Street" class="form-control" rows="2" placeholder="Building name, street number..."></textarea>
+                                <span asp-validation-for="Address.Street" class="text-danger small"></span>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" style="opacity: 0.1;">
+
+                        <div class="mb-4">
+                            <p class="text-muted small"><i class="fa-solid fa-lock me-1"></i> Your transaction is secured and encrypted.</p>
+                        </div>
+
+                        <button type="submit" class="btn btn-place-order btn-lg w-100 rounded-pill">
+                            Confirm and Place Order
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="card summary-card border-0 sticky-top" style="top: 100px;">
+                <div class="card-body p-4">
+                    <h5 class="mb-4 d-flex align-items-center text-brand-dark">
+                        <i class="fa-solid fa-basket-shopping me-2"></i> Order Summary
+                    </h5>
+
+                    <ul class="list-group list-group-flush order-item-list bg-transparent">
+                        @if (cartItems != null)
+                        {
+                            @foreach (var item in cartItems)
+                            {
+                                <li class="list-group-item d-flex justify-content-between align-items-center bg-transparent px-0 border-bottom">
+                                    <div class="me-auto">
+                                        <h6 class="my-0 fw-bold text-brand-dark">@item.Product.Name</h6>
+                                        <small class="text-muted">Qty: @item.Quantity × $@item.UnitPrice</small>
+                                    </div>
+                                    <span class="fw-bold text-brand-dark">$@item.LineTotal</span>
+                                </li>
+                            }
+                        }
+                    </ul>
+
+                    <div class="pt-3">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="text-muted">Subtotal</span>
+                            <span class="text-brand-dark fw-bold">$@cartItems?.Sum(i => i.LineTotal)</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="text-muted">Shipping</span>
+                            <span class="text-success fw-bold">FREE</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                            <span class="fs-5 fw-bold text-brand-dark">Total</span>
+                            <span class="fs-4 fw-bold" style="color: var(--brand-light);">$@cartItems?.Sum(i => i.LineTotal)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

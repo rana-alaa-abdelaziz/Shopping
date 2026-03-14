@@ -1,0 +1,332 @@
+﻿@model Shopping.ViewModels.RegisterVM
+
+@{
+    ViewData["Title"] = "Register";
+    Layout = null;
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+    <style>
+        :root {
+        --brand-dark:  #1A4270;
+        --brand-light: #5cc8f7;
+            --white: white;
+;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+    .login-container {
+        display: flex;
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .login-brand-side {
+        flex: 1;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+    }
+
+    .login-form-side {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--brand-dark);
+    }
+
+    .brand-content-wrapper {
+        display: flex;
+        flex-direction: column; 
+        align-items: center; 
+        justify-content: center;
+        text-align: center;
+        gap: 5px;
+    }
+
+    .login-brand-side video {
+        width: 300px;
+        height: auto;
+        margin-bottom: 10px; 
+    }
+
+    .brand-name {
+        font-family: 'Poppins', sans-serif; 
+        font-weight: 800;
+        font-size: 3.5rem;
+        color: #1A4270;
+        margin: 0;
+        letter-spacing: -1.5px;
+        line-height: 1;
+        text-transform: uppercase;
+    }
+
+    .brand-tagline {
+        color: #5cc8f7;
+        font-size: 1.2rem;
+        font-weight: 500;
+        margin-top: 15px;
+        letter-spacing: 0.5px;
+    }
+
+    .login-brand-side video {
+        width: 350px;
+        height: auto;
+        border: none;
+        background: transparent;
+        mix-blend-mode: multiply;
+    }
+
+    .login-brand-side, .login-form-side {
+        flex: 0 0 50%; 
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .brand-name, .brand-tagline {
+        animation: fadeInUp 1s ease forwards;
+        opacity: 0;
+        animation-delay: 0.8s;
+    }
+
+    @@keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+        body {
+        background-color: var(--white);
+        margin: 0;
+        padding: 0; 
+        height: 100vh;
+        width: 100vw;
+        overflow: hidden;
+    }
+
+    .floating-logo {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        width: 500px;
+        height: auto;
+        z-index: 100;
+        transform: rotate(-8deg);
+        animation: floatEffect 4s ease-in-out infinite;
+    }
+        .floating-logo img {
+            width: 100%;
+            height: auto;
+        }
+
+
+        .register-card {
+        background-color: var(--brand-light);
+            width: 100%;
+            height: auto;
+            max-width: 450px;
+            padding-left:10px;
+            padding-right:10px;
+            padding-bottom:20px;
+            padding-top:20px;
+            border-radius: 35px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            align-items:center;
+          
+        }
+
+        h2 {
+            color: var(--brand-dark);
+            font-size: 28px;
+            margin-bottom: 8px;
+            text-align: center;
+        margin-bottom: 5px;
+        }
+
+        p.description {
+
+        color: white;
+        opacity: 0.8;
+            text-align: center;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .field-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--brand-dark);
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px 15px;
+        border: 1.5px solid rgba(255,255,255,0.3);
+        border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+            input:focus {
+                border-color: var(--brand-dark);
+                box-shadow: 0 0 0 4px rgba(116, 192, 252, 0.15);
+            }
+
+        .error-msg {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .btn-submit {
+            width: 50%;
+            background-color: var(--brand-dark);
+            color: var(--white);
+            border: none;
+            padding: 14px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 700;
+        display: block;
+        margin: 10px auto 0 auto;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.1s, background-color 0.2s;
+        }
+
+            .btn-submit:hover {
+                background-color: #5fb4f8;
+            }
+
+            .btn-submit:active {
+                transform: scale(0.98);
+            }
+
+        .footer {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+           color: white;
+        }
+
+            .footer a {
+                color: var(--brand-dark);
+            font-weight: 700;
+            text-decoration: underline;
+            }
+  
+    .brand-name, .brand-tagline {
+        animation: fadeInUp 1s ease forwards;
+        opacity: 0;
+        animation-delay: 0.5s;
+    }
+
+    @@keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+.field-validation-error, .error-msg {
+    color: red !important; 
+    font-size: 12px;
+    font-weight: 700;
+    display: block;
+    margin-top: 5px;
+    text-align: left;
+}
+
+.input-validation-error {
+    border: 1.5px solid red !important;
+    background-color: rgba(255, 77, 77, 0.05);
+}
+    </style>
+
+<div class="login-container">
+    <div class="login-brand-side">
+        <div class="brand-content-wrapper">
+            <video autoplay muted  playsinline poster="~/css/logo.png">
+                <source src="~/css/upscaled-video.mp4" type="video/mp4">
+            </video>
+            <h1 class="brand-name">Daily Drop</h1>
+            <p class="brand-tagline">Freshness delivered to your door.</p>
+        </div>
+    </div>
+
+    <div class="login-form-side">
+        <div class="register-card">
+            <h2>Create Account</h2>
+            <p class="description">Join the Daily Drop community today.</p>
+            <div asp-validation-summary="ModelOnly" class="error-msg" style="text-align:center; margin-bottom:10px;"></div>
+            <form asp-action="Register" method="post">
+                <div class="field-group">
+                    <label asp-for="FullName">Full Name</label>
+                    <input asp-for="FullName" placeholder="Enter your name" />
+                    <span asp-validation-for="FullName" class="error-msg"></span>
+                </div>
+
+                <div class="field-group">
+                    <label asp-for="Email">Email Address</label>
+                    <input asp-for="Email" placeholder="name@example.com" />
+                    <span asp-validation-for="Email" class="error-msg"></span>
+                </div>
+
+                <div class="field-group">
+                    <label asp-for="PhoneNumber">Phone Number</label>
+                    <input asp-for="PhoneNumber" placeholder="+20..." />
+                    <span asp-validation-for="PhoneNumber" class="error-msg"></span>
+                </div>
+
+                <div class="field-group">
+                    <label asp-for="Password">Password</label>
+                    <input asp-for="Password" type="password" placeholder="••••••••" />
+                    <span asp-validation-for="Password" class="error-msg"></span>
+                </div>
+
+                <div class="field-group">
+                    <label asp-for="ConfirmPassword">Confirm Password</label>
+                    <input asp-for="ConfirmPassword" type="password" placeholder="••••••••" />
+                    <span asp-validation-for="ConfirmPassword" class="error-msg"></span>
+                </div>
+
+                <button type="submit" class="btn-submit">Register Now</button>
+            </form>
+
+            <div class="footer">
+                Already have an account? <a asp-controller="Account" asp-action="Login">Log In</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

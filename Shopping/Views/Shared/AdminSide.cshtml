@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shopping</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Shopping.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        overflow-x: hidden;
+    }
+
+    .sidebar {
+        min-height: 100vh;
+        width: 250px;
+        background-color: #1A4270;
+        transition: all 0.3s;
+    }
+
+        .sidebar .nav-link {
+            color: rgba(255,255,255,0.8);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+            .sidebar .nav-link:hover {
+                background-color: rgba(255,255,255,0.1);
+                color: white;
+            }
+
+            .sidebar .nav-link.active {
+                background-color: #74C0FC; 
+                color: #1A4270;
+                font-weight: bold;
+            }
+
+    .main-content {
+        flex: 1;
+        background-color: #f8f9fa;
+        padding: 20px;
+    }
+</style>
+
+
+    <div class="d-flex">
+        <div class="sidebar d-flex flex-column p-0">
+            <div class="p-4 text-white text-center">
+                <h4>Daily Drop</h4>
+                <small>Admin Panel</small>
+            </div>
+            <ul class="nav flex-column">
+               
+                <li class="nav-item">
+                <a asp-controller="Categories"asp-action="Index" class="nav-link active">
+                        <i class="fa-solid fa-tags me-2"></i> Categories
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-controller="AdminOrder" asp-action="Index" class="nav-link">
+                        <i class="fa-solid fa-truck-ramp-box me-2"></i> Orders Management
+                    </a>
+                </li>
+               
+            </ul>
+        <div class="mt-auto p-3">
+            <a asp-controller="Account" asp-action="Logout" class="btn btn-danger w-100">
+                <i class="fa-solid fa-right-from-bracket me-2"></i> Logout
+            </a>
+        </div>
+        </div>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+

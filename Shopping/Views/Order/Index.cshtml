@@ -1,0 +1,152 @@
+﻿@model List<ITIEntities.Order>
+
+<style>
+    :root {
+        --brand-dark: #1A4270;
+        --brand-light: #5cc8f7;
+    }
+
+    .text-brand-dark {
+        color: var(--brand-dark) !important;
+    }
+
+    .history-card {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        background: white;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background-color: #f8fbff;
+    }
+
+        .table thead th {
+            color: var(--brand-dark);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            padding: 15px;
+            border-bottom: 2px solid #edf2f9;
+        }
+
+    .table tbody td {
+        padding: 18px 15px;
+        vertical-align: middle;
+        color: #4a5568;
+    }
+
+    .badge-pending {
+        background-color: rgba(92, 200, 247, 0.15);
+        color: var(--brand-light);
+        border: 1px solid var(--brand-light);
+        font-weight: 600;
+    }
+
+     .btn-details {
+        background-color: var(--brand-dark);
+        color: white !important;
+        border-radius: 20px;
+        padding: 8px 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-decoration: none !important;
+        display: inline-flex;
+        align-items: center;
+        transition: 0.3s all ease;
+        border: none;
+    }
+
+    .btn-details:hover {
+        background-color: var(--brand-light);
+        color: white !important;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .btn-details i {
+        margin-right: 8px;
+        font-size: 0.9rem;
+    }
+
+    .btn-outline-brand {
+        border: 2px solid var(--brand-dark);
+        color: var(--brand-dark);
+        font-weight: 600;
+        border-radius: 20px;
+        transition: 0.3s;
+        text-decoration: none;
+    }
+
+        .btn-outline-brand:hover {
+            background-color: var(--brand-dark);
+            color: white !important;
+            transform: translateY(-2px);
+        }
+</style>
+<div class="container mt-5 mb-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fa-solid fa-clock-rotate-left fs-3 text-brand-light me-3"></i>
+            <h2 class="text-brand-dark fw-bold mb-0">My Order History</h2>
+        </div>
+        <a asp-controller="Catalog" asp-action="Index" class="btn btn-outline-brand px-4">
+            <i class="fa-solid fa-store me-2"></i>Continue Shopping
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="card history-card text-center py-5 shadow-sm">
+            <div class="card-body">
+                <i class="fa-solid fa-box-open fa-4x mb-3 text-muted" style="opacity: 0.3;"></i>
+                <p class="fs-5 text-muted">You haven't placed any orders yet.</p>
+                <a asp-controller="Catalog" asp-action="Index" class="btn btn-lg rounded-pill px-4 text-white" style="background-color: var(--brand-dark);">
+                    Start Shopping
+                </a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="card history-card">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead>
+                        <tr>
+                            <th>Order Number</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var order in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold text-brand-dark">
+                                    <i class="fa-solid fa-hashtag small me-1"></i>@order.OrderNumber
+                                </td>
+                                <td>@order.OrderDate.ToShortDateString()</td>
+                                <td class="fw-bold">$@order.TotalAmount.ToString("F2")</td>
+                                <td>
+                                    <span class="badge badge-stock px-3 py-2 rounded-pill @(order.Status == "Pending" ? "badge-pending" : "bg-success")">
+                                        @order.Status
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId" class="btn-details">
+                                        <i class="fa-solid fa-circle-info"></i> View Details
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>

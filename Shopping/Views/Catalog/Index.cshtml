@@ -1,0 +1,202 @@
+﻿@model IEnumerable<Shopping.ViewModels.ProductVM>
+@{
+    Layout = "nav";
+ 
+}
+
+
+<style>
+    :root {
+        --brand-dark: #1A4270;
+        --brand-light: #5cc8f7;
+    }
+    .text-brand-dark {
+        color: var(--brand-dark) !important;
+    }
+    .bg-f8f9fa {
+        background-color: #f8f9fa;
+    }
+
+    .product-card img {
+        background-color: #fdfdfd;
+        object-fit: contain;
+    }
+
+   #categoryMenu {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .search-input:focus {
+        box-shadow: none;
+        border-color: #e9ecef;
+        background-color: #fff;
+    }
+    .navbar {
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        background-color: #fff !important;
+    }
+
+    .search-input {
+        border-radius: 20px !important;
+        padding-left: 1.5rem;
+        background-color: #f8f9fa;
+        border: 1px solid #e9ecef;
+        min-width: 300px;
+    }
+
+    .nav-icon {
+        font-size: 1.2rem;
+        transition: transform 0.2s;
+        cursor: pointer;
+    }
+
+        .nav-icon:hover {
+            transform: scale(1.1);
+        }
+
+    .btn-login {
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+        font-weight: 500;
+        border: none;
+        background-color: #f8f9fa;
+        color: #333;
+    }
+
+
+        .btn-login:hover {
+            background-color: #e2e6ea;
+        }
+
+    .cart-badge {
+        font-size: 0.7rem;
+        vertical-align: top;
+        margin-left: -10px;
+        color: rgb(116, 192, 252);
+    }
+
+    .product-card {
+        border: none;
+        border-radius: 15px;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+    .menu-btn {
+        background-color: var(--brand-dark);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 8px 15px;
+    }
+
+        .menu-btn:hover {
+            background-color: var(--brand-light);
+        }
+
+    .btn-info {
+        background-color: var(--brand-light);
+        border-color: var(--brand-light);
+        color: white;
+    }
+
+        .btn-info:hover {
+            background-color: var(--brand-dark);
+            border-color: var(--brand-dark);
+        }
+
+    .btn-outline-secondary {
+        border-color: var(--brand-light);
+        color: var(--brand-dark);
+    }
+
+        .btn-outline-secondary:hover {
+            background-color: var(--brand-light);
+            border-color: var(--brand-light);
+            color: white;
+        }
+    .page-item.active .page-link {
+        background-color: var(--brand-light);
+        border-color: var(--brand-light);
+    }
+
+    .page-link {
+        color: var(--brand-dark);
+    }
+</style>
+
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold" style="color:#1A4270">Our Products</h2>
+
+        <div class="dropdown">
+            <button class="btn btn-light dropdown-toggle border" type="button" data-bs-toggle="dropdown">
+                Sort by
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" asp-action="Index" asp-route-sort="price_asc">Price: Low to High</a></li>
+                <li><a class="dropdown-item" asp-action="Index" asp-route-sort="price_desc">Price: High to Low</a></li>
+                <li><a class="dropdown-item" asp-action="Index" asp-route-sort="">Newest First</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        @if(Model!=null )
+        {
+            @foreach(var item in Model)
+            {
+                <div class="col-md-3 col-sm-6">
+                    <a asp-action="Details" asp-route-id="@item.ProductId" class="text-decoration-none">
+                    <div class="card h-100 product-card shadow-sm">
+                            <img src="@(item.ImageUrl ?? "/images/default.png")"
+                                 class="card-img-top p-3"
+                                 alt="@item.Name"
+                                 style="height: 200px; object-fit: contain; background-color: #f8f9fa;"
+                                 onerror="this.onerror=null;this.src='/images/default.png';">
+                                 <div class="card-body text-center">
+                                <h5 class="card-title fw-bold text-brand-dark">@item.Name</h5>
+                            <div class="d-flex justify-content-between align-items-center">
+                                    <span class="fw-bold text-brand-dark">$@item.Price</span>
+                                <button class="btn btn-sm btn-info text-white rounded-pill px-3">Add +</button>
+                            </div>
+                        </div>
+                    </div>
+                    </a>
+                </div>
+				
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center py-5">
+                <p class="text-muted">No products found matching your search.</p>
+            </div>
+        }
+    </div>
+</div>
+
+
+<nav aria-label="Page navigation" class="mt-5">
+    <ul class="pagination justify-content-center">
+        @for (int i = 1; i <= ViewBag.TotalPages; i++)
+        {
+            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                <a class="page-link"
+             
+                asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-SearchQuery="@ViewBag.CurrentSearch"
+                   asp-route-sort="@ViewBag.CurrentSort"
+                   asp-route-categoryId="@ViewBag.CurrentCategory">
+                    @i
+                </a>
+            </li>
+        }
+    </ul>
+</nav>

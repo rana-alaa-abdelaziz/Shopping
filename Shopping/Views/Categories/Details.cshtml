@@ -1,0 +1,130 @@
+﻿
+@model ITIEntities.Category
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+<style>
+    h2 {
+        color: #1A4270;
+    }
+
+    h4 {
+        color: #1A4270;
+    }
+     .table thead th {
+    background-color: #1A4270;
+    color: white;
+    border: none;
+}
+
+.table thead th:first-child {
+    border-top-left-radius: 10px;
+}
+
+.table thead th:last-child {
+    border-top-right-radius: 10px;
+}
+            .table tbody td{
+        color: #1A4270;
+            }
+
+    .btn-brand-outline {
+        background-color: white;
+        color: #1A4270;
+        border: 2px solid #1A4270;
+    }
+
+        .btn-brand-outline:hover {
+            background-color: #1A4270;
+            color: white;
+            border-color: #1A4270;
+        }
+
+
+//
+    .btn-brand2 {
+        background: #1A4270;
+        color: white;
+        border: none;
+    }
+
+    .btn-brand2:hover {
+        background: #16365c;
+        color: white;
+    }
+
+    .btn-brand2-outline {
+        background: white;
+        color: #1A4270;
+        border: 2px solid #1A4270;
+    }
+
+        .btn-brand2-outline:hover {
+            background: #1A4270;
+            color: white;
+        }
+</style>
+
+<div class="container mt-4">
+    <h2>Category: @Model.Name</h2>
+    <hr />
+
+    <h4>Products in this Category</h4>
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <table class="table table-striped table-hover mt-3">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>CratedAT</th>
+
+                    <th>Status</th>
+                    <th>Actions</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var prod in Model.Products)
+                {
+                    <tr>
+                        <td>@prod.Name</td>
+                        <td>@prod.SKU</td>
+                        <td>@prod.Price.ToString("C")</td>
+                        <td>@prod.StockQuantity</td>
+                        <td>@prod.CreatedAt</td>
+                        <td>
+                            <span class="badge @(prod.IsActive ? "bg-success" : "bg-secondary")">
+                                @(prod.IsActive ? "Active" : "Inactive")
+                            </span>
+                        </td>
+                      <td>
+                            <a asp-controller="Product" asp-action="Edit" asp-route-id="@prod.ProductId" class="btn btn-brand2-outline">
+                                Edit
+                            </a>
+                        </td>
+                        <td>
+                              <a asp-controller="Product" asp-action="Delete" asp-route-id="@prod.ProductId" class="btn btn-outline-danger"> Delete </a>
+                        </td>
+
+                       
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-info">No products found in this category.</div>
+    }
+
+    <div class="mt-4">
+        <a asp-controller="Product" asp-action="Create" asp-route-categoryid="@Model.CategoryId" class="btn btn-primary" style="background-color: #1A4270";>
+            Add New Product to this Category
+        </a>   
+        <a asp-action="Index" class="btn btn-brand-outline">Back to List</a>
+    </div>
+</div>

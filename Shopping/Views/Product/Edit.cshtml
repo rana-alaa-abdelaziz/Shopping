@@ -1,0 +1,122 @@
+﻿@using Shopping.ViewModels
+@model ProductVM
+
+@{
+    ViewData["Title"] = "Edit Product";
+}
+<style>
+    :root {
+        --brand: #1A4270;
+    }
+
+    .card-custom {
+        border: 1px solid #e3e6ea;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+        background: var(--brand);
+        color: white;
+        font-weight: 600;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    label {
+        font-weight: 500;
+        color: var(--brand);
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-brand {
+        background: var(--brand);
+        color: white;
+        border: none;
+    }
+
+        .btn-brand:hover {
+            background: #16365c;
+            color: white;
+        }
+
+    .btn-brand-outline {
+        background: white;
+        color: var(--brand);
+        border: 2px solid var(--brand);
+    }
+
+        .btn-brand-outline:hover {
+            background: var(--brand);
+            color: white;
+        }
+
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+    }
+</style>
+
+<div class="container mt-4">
+
+
+    <div class="card card-custom">
+
+        <div class="card-header">
+            Edit Product
+        </div>
+
+        <div class="card-body">
+
+            <h5 class="text-center mb-4">
+                Category: <strong>@Model.Category?.Name</strong>
+            </h5>
+
+            <div class="form-container">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="ProductId" />
+                <input type="hidden" asp-for="CategoryId" />
+           
+
+                <div class="form-group mb-3">
+                    <label asp-for="Name" class="control-label font-weight-bold"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="SKU" class="control-label"></label>
+                        <input asp-for="SKU" class="form-control" />
+                        <span asp-validation-for="SKU" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6 form-group mb-3">
+                        <label asp-for="Price" class="control-label"></label>
+                        <input asp-for="Price" class="form-control" type="number" step="0.01" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="StockQuantity" class="control-label">Stock Quantity</label>
+                    <input asp-for="StockQuantity" class="form-control" />
+                    <span asp-validation-for="StockQuantity" class="text-danger"></span>
+                </div>
+
+                <div class="form-group form-check mb-4">
+                    <input class="form-check-input" asp-for="IsActive" />
+                    <label class="form-check-label" asp-for="IsActive"> Is Product Active?</label>
+                </div>
+
+                <div class="form-group">
+                        <button type="submit" class="btn btn btn-brand">Save Changes</button>
+                    <a asp-controller="Categories" asp-action="Details" asp-route-id="@Model.CategoryId" class="btn btn-outline-danger">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</div>

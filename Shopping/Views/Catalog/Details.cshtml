@@ -1,0 +1,129 @@
+﻿@model Shopping.ViewModels.ProductVM
+
+@{
+    ViewData["Title"] = Model.Name;
+}
+<style>
+    :root {
+        --brand-dark: #1A4270;
+        --brand-light: #5cc8f7;
+    }
+
+    h1, h2, p, .breadcrumb-item, .text-dark {
+        color: var(--brand-dark) !important;
+    }
+
+    .card-container {
+        overflow: hidden; 
+        background-color: white;
+    }
+
+    .image-section {
+        background-color: var(--brand-dark);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .product-img {
+        max-height: 410px;
+        object-fit: contain;
+        filter: drop-shadow(0 10px 20px rgba(0,0,0,0.3)); /* Makes image pop against dark bg */
+    }
+
+    .btn-brand-add {
+        background-color: var(--brand-light);
+        color: white;
+        border: none;
+        font-weight: 600;
+        padding: 12px 30px;
+        transition: 0.3s;
+    }
+
+        .btn-brand-add:hover {
+            background-color: #4bb3e0;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+    .btn-outline-brand {
+        border: 2px solid var(--brand-dark);
+        color: var(--brand-dark);
+        font-weight: 600;
+    }
+
+        .btn-outline-brand:hover {
+            background-color: var(--brand-dark);
+            color: white;
+        }
+
+    .badge-stock {
+        background-color: rgba(92, 200, 247, 0.1);
+        color: var(--brand-light);
+        border: 1px solid var(--brand-light);
+    }
+</style>
+<div class="container mt-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-white shadow-sm rounded-4 p-2">
+            <li class="breadcrumb-item">
+                <a asp-action="Index" class="text-decoration-none">Catalog</a>
+            </li>
+            <li class="breadcrumb-item active">@Model.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row card-container shadow-sm rounded-4 mt-3 g-0">
+        <div class="col-md-6 image-section">
+            <img src="@Model.ImageUrl" class="img-fluid rounded product-img" alt="@Model.Name">
+        </div>
+
+        <div class="col-md-6 p-5 d-flex flex-column justify-content-center">
+            <small class="text-uppercase fw-bold" style="color: var(--brand-light); letter-spacing: 2px;">
+                @Model.Category?.Name
+            </small>
+
+            <h1 class="display-5 fw-bold mt-2">@Model.Name</h1>
+            <p class="text-muted mb-4">SKU: <span class="fw-bold">@Model.SKU</span></p>
+
+            <h2 class="display-6 fw-bold mb-4">
+                $@Model.Price.ToString("F2")
+            </h2>
+
+            <div class="mb-4">
+                @if (Model.StockQuantity > 0)
+                {
+                    <span class="badge badge-stock px-3 py-2 rounded-pill">
+                        <i class="fa-solid fa-check-circle me-1"></i> In Stock (@Model.StockQuantity units)
+                    </span>
+                }
+                else
+                {
+                    <span class="badge bg-danger-subtle text-danger border border-danger px-3 py-2 rounded-pill">
+                        Out of Stock
+                    </span>
+                }
+            </div>
+
+            <p class="lead fs-6 mb-5">
+                Experience the freshest quality with <strong>DailyDrop</strong>. Our @Model.Name is sourced daily to ensure the best taste and nutrition for your kitchen.
+            </p>
+
+            <div class="d-flex gap-3 align-items-center">
+                <form asp-controller="Cart" asp-action="Add" method="post">
+                    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+                    <input type="hidden" name="UnitPrice" value="@Model.Price" />
+                    <input type="hidden" name="Quantity" value="1" />
+                    <button type="submit" class="btn btn-brand-add btn-lg rounded-pill">
+                        <i class="fa-solid fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                </form>
+
+                <a asp-action="Index" class="btn btn-outline-brand btn-lg px-4 rounded-pill">
+                    Back to Shop
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

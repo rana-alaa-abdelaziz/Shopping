@@ -1,0 +1,112 @@
+﻿
+@using Shopping.ViewModels
+@model CategoryVM
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Add New Category";
+}
+
+<style>
+    :root {
+        --brand: #1A4270;
+    }
+
+    h1 {
+        color: var(--brand);
+        font-weight: 600;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .card-custom {
+        border: 1px solid #e3e6ea;
+        border-radius: 10px;
+        box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+    }
+
+    .card-header {
+        background: var(--brand);
+        color: white;
+        font-weight: 600;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        text-align: center;
+        font-size: 20px;
+    }
+
+    label {
+        font-weight: 500;
+        color: var(--brand);
+    }
+
+    .form-control {
+        border-radius: 6px;
+    }
+
+    .btn-brand {
+        background: var(--brand);
+        color: white;
+        border: none;
+    }
+
+        .btn-brand:hover {
+            background: #16365c;
+            color: white;
+        }
+
+    .btn-brand-outline {
+        background-color: white;
+        color: var(--brand);
+        border: 2px solid var(--brand);
+    }
+
+        .btn-brand-outline:hover {
+            background-color: var(--brand);
+            color: white;
+            border-color: var(--brand);
+        }
+
+    .form-container {
+        max-width: 600px;
+        margin: auto;
+    }
+
+</style>
+
+<div class="container mt-4">
+
+    <div class="card card-custom">
+        <div class="card-header">
+            Add New Category
+        </div>
+
+        <div class="card-body form-container">
+            <form asp-action="Create" method="post">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                <div class="mb-3">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label asp-for="ParentCategoryId" class="control-label"></label>
+                    <select asp-for="ParentCategoryId" class="form-control" asp-items="ViewBag.ParentCategories">
+                        <option value="">-- Select Parent Category --</option>
+                    </select>
+                    <span asp-validation-for="ParentCategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-start gap-2 mt-3">
+                    <input type="submit" value="Add Category" class="btn btn-brand" />
+                    <a asp-action="Index" class="btn btn-outline-danger">Cancel</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+</div>

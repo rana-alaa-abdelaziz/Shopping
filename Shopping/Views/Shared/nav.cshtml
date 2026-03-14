@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Shopping</title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Shopping.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+
+    <nav class="navbar navbar-light sticky-top bg-white border-bottom px-5 ">
+        <div class="container d-flex align-items-center">
+
+            <div class="d-flex align-items-center">
+                <button class="btn menu-btn me-3  border-2 me-3 d-flex align-items-center gap-2"
+                        type="button" data-bs-toggle="collapse" data-bs-target="#categoryMenu"
+                        style="border-radius:12px; padding:8px 15px; background-color:#1A4270; color:white;">
+                    <i class="fa-solid fa-bars"></i>
+                    <span class="fw-bold">Menu</span>
+                </button>
+
+                <a asp-controller="Catalog" asp-action="Index" class="d-flex align-items-center text-decoration-none">
+                    <img src="~/css/logo.png" style="height:80px; width:auto;" alt="Logo" />
+                    <span class="fs-4 ms-2 fw-normal" style="color: #5cc8f7; letter-spacing: -1px;">Daily</span>
+                    <span class="fs-4 fw-bold " style="letter-spacing: -1px ;color:#1A4270">Drop</span>
+                </a>
+            </div>
+
+            <div class="flex-grow-1 mx-4 d-none d-md-block" style="max-width: 500px;">
+                <form method="get" asp-action="Index">
+                    <div class="input-group">
+                        <input name="SearchQuery" class="form-control search-input border-end-0"
+                               type="search" placeholder="Search products..." value="@ViewBag.CurrentSearch">
+                        <button class="btn bg-white  text-info" type="submit">
+
+                            <i class="fa-solid fa-magnifying-glass" style="color: #5cc8f7;"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="d-flex align-items-center gap-4">
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <div class="text-center">
+                        <a asp-controller="Account" asp-action="Logout" class="text-decoration-none d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-right-from-bracket fs-5" style="color: rgb(116, 192, 252);"></i>
+                            <span class="d-none d-sm-inline fw-medium text-brand-dark" style="color:#1A4270">Logout</span>
+                        </a>
+                    </div>
+
+                    <div class="text-center">
+                        <span class="d-none d-sm-inline fw-medium text-brand-dark">
+                            Hello, @User.Identity.Name
+                        </span>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center">
+                        <a href="/Account/Login" class="text-decoration-none d-flex align-items-center gap-2">
+                            <i class="fa-solid fa-user fs-5" style="color: rgb(116, 192, 252);"></i>
+                            <span class="d-none d-sm-inline fw-medium text-brand-dark">Login</span>
+                        </a>
+                    </div>
+                }
+            </div>
+
+
+
+
+
+            <div class="position-relative">
+                <a asp-controller="Cart" asp-action="Index" class="text-decoration-none">
+                    <i class="fa-solid fa-cart-shopping fs-5 " style="color: rgb(116, 192, 252);"></i>
+                    @* <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                        @ViewBag.CartCount
+                    </span> *@
+                </a>
+            </div>
+
+
+
+
+
+        </div>
+        <div class="collapse w-100 bg-light border-bottom" id="categoryMenu">
+            <div class="container py-3">
+                <p class="text-muted small fw-bold text-uppercase mb-2">Shop by Category</p>
+                <div class="d-flex flex-wrap gap-2">
+                    <a class="btn @(ViewBag.CurrentCategory == null ? "btn-info text-white" : "btn-outline-secondary") rounded-pill px-4"
+                       asp-action="Index"
+                       asp-route-SearchQuery="@ViewBag.CurrentSearch">
+                        All Products
+                    </a>
+
+                    @if (ViewBag.Categories != null)
+                    {
+                        @foreach (var cat in ViewBag.Categories)
+                        {
+                            <a class="text-brand-dark btn @(ViewBag.CurrentCategory == cat.CategoryId ? "btn-info text-white" : "btn-outline-secondary") rounded-pill px-4"
+                               asp-action="Index"
+                               asp-route-categoryId="@cat.CategoryId"
+                               asp-route-SearchQuery="@ViewBag.CurrentSearch">
+                                @cat.Name
+                            </a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="text-center">
+            <a asp-controller="Order" asp-action="Index" class="text-decoration-none d-flex align-items-center gap-2">
+                <i class="fa-solid fa-box fs-5" style="color: #5cc8f7;"></i>
+                <span class="d-none d-sm-inline fw-medium text-brand-dark">My Orders</span>
+            </a>
+        </div>
+    </nav> 
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

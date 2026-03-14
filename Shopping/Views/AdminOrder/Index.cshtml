@@ -1,0 +1,158 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "AdminSide";
+}
+<style>
+    .table thead th {
+        background-color: #1A4270 !important;
+        color: #ffffff !important;
+        border: none;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 13px;
+        letter-spacing: 0.5px;
+        padding: 15px;
+    }
+
+    .table tbody td {
+        vertical-align: middle;
+        padding: 15px;
+        border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table-container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        overflow: hidden; 
+    }
+    .btn-brand {
+        background-color: #1A4270;
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+    }
+
+        .btn-brand:hover {
+            background-color: #5cc8f7;
+            color: #1A4270;
+        }
+
+    .btn-outline-edit {
+        color: #1A4270;
+        border: 1px solid #1A4270;
+    }
+
+        .btn-outline-edit:hover {
+            background-color: #1A4270;
+            color: white;
+        }
+
+    .btn-outline-details {
+        color: #5cc8f7;
+        border: 1px solid #5cc8f7;
+    }
+
+        .btn-outline-details:hover {
+            background-color: #5cc8f7;
+            color: white;
+        }
+
+    .btn-outline-delete {
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    }
+
+        .btn-outline-delete:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+    .title-brand {
+        color: #1A4270 !important;
+        font-weight: 700;
+    }
+    h2{
+        color: #1A4270;
+    }
+    .table thead {
+        background-color: #1A4270;
+    }
+
+        .table thead th {
+            color: white;
+            border: none;
+           
+        }
+            .table thead th:first-child {
+                border-top-left-radius: 10px;
+            }
+
+            .table thead th:last-child {
+                border-top-right-radius: 10px;   
+            }
+            .table tbody td{
+        color: #1A4270;
+            }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 style="color:#1A4270">Orders Management</h2>
+    <span class="badge bg-secondary p-2">Total Orders: @Model.Count</span>
+</div>
+
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Current Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td class="fw-bold">@order.OrderNumber</td>
+                        <td>@order.App_User?.FullName <br /> <small class="text-muted">@order.App_User?.Email</small></td>
+                        <td>@order.OrderDate.ToShortDateString()</td>
+                        <td>$@order.TotalAmount</td>
+                        <td>
+                            @{
+                                var badgeClass = order.Status switch
+                                {
+                                    "Pending" => "bg-warning text-dark",
+                                    "Processing" => "bg-info text-white",
+                                    "Shipped" => "bg-primary",
+                                    "Completed" => "bg-success",
+                                    "Cancelled" => "bg-danger",
+                                    _ => "bg-secondary"
+                                };
+                            }
+                            <span class="badge @badgeClass">@order.Status</span>
+                        </td>
+                        <td>
+                            <form asp-action="UpdateStatus" method="post" class="d-flex gap-2">
+                                <input type="hidden" name="orderId" value="@order.OrderId" />
+                                <select name="newStatus" class="form-select form-select-sm" style="width: 130px;">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Processing">Processing</option>
+                                    <option value="Shipped">Shipped</option>
+                                    <option value="Completed">Completed</option>
+                                    <option value="Cancelled">Cancelled</option>
+                                </select>
+                                <button type="submit" class="btn btn-sm" style="background-color:#1A4270; color:white">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
